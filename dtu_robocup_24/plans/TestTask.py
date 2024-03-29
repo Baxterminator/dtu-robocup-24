@@ -1,9 +1,10 @@
 from enum import Enum, auto
-from raubase_ros.plan import BaseTask
+from raubase_ros.plan import BaseTask, close_to
 from raubase_ros.plan.conditions import (
     FollowPreviousTask,
     StartTaskCondition,
     StopTaskCondition,
+    FlowTaskCondition,
     Never,
 )
 from raubase_ros.plan.data import Requirement
@@ -29,10 +30,10 @@ class TestTask(BaseTask):
     def requirements(self) -> Requirement:
         return Requirement.MOVE | Requirement.ODOMETRY
 
-    def start_condition(self) -> StartTaskCondition:
+    def start_condition(self) -> StartTaskCondition | FlowTaskCondition:
         return FollowPreviousTask()
 
-    def stop_condition(self) -> StopTaskCondition:
+    def stop_condition(self) -> StopTaskCondition | FlowTaskCondition:
         return Never()
 
     def loop(self) -> None:

@@ -38,7 +38,7 @@ class AxeGateTask(BaseTask):
     def loop(self) -> None:
         match self.state:
             case TaskStep.GO_FORWARD:
-                self.control.follow_line(False, 0, 0.3)
+                self.control.follow_line(False, 0, 0.03)
 
                 if self.data.distance >= 0.4:
                     self.state = TaskStep.DONE
@@ -47,7 +47,7 @@ class AxeGateTask(BaseTask):
                     self.state = TaskStep.STOP
 
             case TaskStep.STOP:
-                self.control.follow_line(False, 0, 0.0)
+                self.control.follow_line(False, 0, 0.03)
 
                 if self.data.ir[0].range > 0.2:
                     self.state = TaskStep.GO_FORWARD
