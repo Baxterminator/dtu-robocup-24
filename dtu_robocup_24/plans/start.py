@@ -35,7 +35,7 @@ class StartTask(BaseTask):
         match self.state:
             case TaskStep.START:
                 self.logger.info("start ...")
-                self.control.follow_line(True, 0.2, 0.2)
+                self.control.follow_line(True, 0.3, 0.2)
 
                 if self.data.distance >= 6:
                     self.state = TaskStep.DONE
