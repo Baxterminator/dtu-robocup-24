@@ -35,20 +35,11 @@ class StartTask(BaseTask):
         match self.state:
             case TaskStep.START:
                 self.logger.info("start ...")
-                #self.control.follow_line(True, 0.03, 0.2)
-                self.control.set_vel_w(0.2, 0)
+                self.control.follow_line(True, 0.03, 0.2)
 
                 if self.data.distance >= 6:
                     self.state = TaskStep.DONE
-                #self.data.reset_time()
-                #self.control.set_vel_w(0, 0.2)
-
-                #if if self.data.time_elapsed >=1
-                #    #self.data.reset_time()
-                     #self.control.set_vel_w(0, 0.2)
-                     #if if self.data.time_elapsed >=1
-                         #self.state = TaskStep.DONE
-
+ 
             case TaskStep.DONE:
                 self.control.set_vel_w(0, 0)
                 self.done = True
