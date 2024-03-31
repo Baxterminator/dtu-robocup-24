@@ -40,11 +40,14 @@ class StartTask(BaseTask):
 
                 if self.data.distance >= 6:
                     self.state = TaskStep.DONE
-                #reset time
+                #self.data.reset_time()
                 #self.control.set_vel_w(0, 0.2)
 
-                #if self.data.distance >= 6:
-                #    self.state = TaskStep.DONE
+                #if if self.data.time_elapsed >=1
+                #    #self.data.reset_time()
+                     #self.control.set_vel_w(0, 0.2)
+                     #if if self.data.time_elapsed >=1
+                         #self.state = TaskStep.DONE
 
             case TaskStep.DONE:
                 self.control.set_vel_w(0, 0)
