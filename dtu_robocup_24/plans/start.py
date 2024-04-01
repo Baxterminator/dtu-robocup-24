@@ -29,7 +29,7 @@ class StartTask(BaseTask):
         return self.stop_cond
 
     def requirements(self) -> Requirement:
-        return Requirement.MOVE | Requirement.ODOMETRY | Requirement.LINE
+        return Requirement.MOVE | Requirement.ODOMETRY | Requirement.MOVE_LINE
 
     def loop(self) -> None:
         match self.state:
@@ -39,7 +39,7 @@ class StartTask(BaseTask):
 
                 if self.data.distance >= 6:
                     self.state = TaskStep.DONE
- 
+
             case TaskStep.DONE:
                 self.control.set_vel_w(0, 0)
                 self.done = True

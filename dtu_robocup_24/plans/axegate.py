@@ -31,7 +31,7 @@ class AxeGateTask(BaseTask):
         return self.stop_con
 
     def requirements(self) -> Requirement:
-        return Requirement.DISTANCE | Requirement.MOVE
+        return Requirement.DISTANCE | Requirement.MOVE | Requirement.MOVE_LINE
 
     # =========================================================================
 

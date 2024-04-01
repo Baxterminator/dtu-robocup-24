@@ -37,7 +37,7 @@ class RampTask(BaseTask):
         return self.stop_cond
 
     def requirements(self) -> Requirement:
-        return Requirement.MOVE | Requirement.ODOMETRY | Requirement.LINE
+        return Requirement.MOVE | Requirement.ODOMETRY | Requirement.MOVE_LINE
 
     def loop(self) -> None:
 
