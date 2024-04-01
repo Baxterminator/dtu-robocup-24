@@ -20,13 +20,13 @@ class StartTask(BaseTask):
 
         self.state = TaskStep.START
         self.stop = False
-        self.stop_cond = OnValue(lambda: self.stop)
 
     def start_condition(self) -> StartTaskCondition | FlowTaskCondition:
         return FollowPreviousTask()
 
     def stop_condition(self) -> StopTaskCondition | FlowTaskCondition:
-        return self.stop_cond
+        self.logger.info(f"Stop start {self.stop}")
+        return OnValue(lambda: self.stop)
 
     def requirements(self) -> Requirement:
         return Requirement.MOVE | Requirement.ODOMETRY | Requirement.MOVE_LINE
@@ -35,11 +35,11 @@ class StartTask(BaseTask):
         match self.state:
             case TaskStep.START:
                 self.logger.info("start ...")
-                self.control.follow_line(True, 0.03, 0.2)
+                self.control.follow_line(True, 0.03, 0.4)
 
-                if self.data.distance >= 6:
+                if self.data.distance >= 8:
                     self.state = TaskStep.DONE
 
             case TaskStep.DONE:
                 self.control.set_vel_w(0, 0)
-                self.done = True
+                self.stop = True

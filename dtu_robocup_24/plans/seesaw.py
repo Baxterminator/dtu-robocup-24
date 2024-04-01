@@ -54,4 +54,4 @@ class SeeSawTask(BaseTask):
             case TaskStep.DONE:
                 self.logger.info("Exiting see-saw")
                 self.control.set_vel_w(0, 0)
-                self.done = True
+                self.stop = True

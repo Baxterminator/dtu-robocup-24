@@ -84,4 +84,4 @@ class RampTask(BaseTask):
 
             case TaskStep.DONE:
                 self.control.set_vel_w(0, 0)
-                self.done = True
+                self.stop = True
