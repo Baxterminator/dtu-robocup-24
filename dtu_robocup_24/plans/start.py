@@ -10,7 +10,9 @@ from raubase_ros.plan import BaseTask, Requirement
 
 
 class TaskStep(Enum):
-    START = auto()
+    START_FORWARD = auto()
+    START_TURN_RIGHT = auto()
+    START_GO_TO_RAMP = auto()
     DONE = auto()
 
 
