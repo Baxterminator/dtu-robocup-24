@@ -47,9 +47,9 @@ class StartTask(BaseTask):
             case TaskStep.START_TURN_RIGHT:
                 self.logger.info("Turn right 90 degree...")
                 # adjust pose
-                self.control.set_vel_h(0, np.pi / 2)
+                self.control.set_vel_h(0, -np.pi / 2)
 
-                if close_to(self.data.odometry.heading, np.pi / 2):
+                if close_to(self.data.odometry.heading, -np.pi / 2):
                     self.data.reset_distance()
                     self.state = TaskStep.START_GO_TO_RAMP
 
