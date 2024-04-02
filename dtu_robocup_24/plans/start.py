@@ -37,31 +37,27 @@ class StartTask(BaseTask):
         match self.state:
             case TaskStep.START_FORWARD:
                 self.logger.info("start and go forward 74.5cm...")
-                self.data.reset_distance()
                 self.control.set_vel_h(0.1,0.0)
 
-                if self.data.distance > 0.745
+                if self.data.distance > 0.745:
                     self.control.set_vel_h(0.0,0.0)
-                    self.data.reset_distance()
+                    self.data.reset_time()
                     self.state = TaskStep.RIGHT_90_1
                 
             case TaskStep.START_TURN_RIGHT:
                 self.logger.info("Turn right 90 degree...")
                 # adjust pose
-                self.data.reset_time()
-                self.control.set_vel_h(0.0,-0.1)
-                
-                if self.data.time_elapsed >= (math.pi/0.2):
-                    self.control.set_vel_h(0,0)
-                    self.data.reset_time()
+                self.control.set_vel_h(0, np.pi / 2)
+
+                if close_to(self.data.odometry.heading, np.pi / 2):
+                    self.data.reset_distance()
                     self.state = TaskStep.START_GO_TO_RAMP
 
-            case TaskStep.START_GO_TO_RAMP
+            case TaskStep.START_GO_TO_RAMP:
                 self.logger.info("Move forward 629cm...")
-                self.data.reset_distance()
                 self.control.set_vel_h(0.1,0.0)
 
-                if self.data.distance > 6.29
+                if self.data.distance > 6.29:
                     self.control.set_vel_h(0.0,0.0)
                     self.data.reset_distance()
                     self.state = TaskStep.DONE
