@@ -15,9 +15,9 @@ from raubase_ros.plan.data import Requirement
 class TaskStep(Enum):
     TURN_DIR_RAMP = auto()
     GO_FOR_RAMP = auto()
-    TURN_TO_RAMP = auto()
-    BOARD_FORWARD = auto()
     TURN_TO_STAIRS = auto()
+    GO_TO_STAIRS = auto()
+    TURN_AGAIN = auto()
     GO_THROUGH_STAIRS = auto()
     DONE = auto()
 
