@@ -43,43 +43,51 @@ class RampTask(BaseTask):
 
         match self.state:
             case TaskStep.TURN_DIR_RAMP:
-                self.logger.info("Going for the ramp ...")
-                self.control.set_vel_h(0, 0)
-
-                if close_to(self.data.odometry.heading, 0):
-                    self.data.reset_distance()
-                    self.state = TaskStep.GO_FOR_RAMP
-            case TaskStep.GO_FOR_RAMP:
-                self.control.set_vel_w(0.25, 0)
-
-                if self.data.distance >= 2.5:
-                    self.state = TaskStep.TURN_TO_RAMP
-            case TaskStep.TURN_TO_RAMP:
+                self.logger.info("Turning for the ramp ...")
                 self.control.set_vel_h(0, -np.pi / 2)
 
                 if close_to(self.data.odometry.heading, -np.pi / 2):
                     self.data.reset_distance()
-                    self.state = TaskStep.BOARD_FORWARD
+                    self.state = TaskStep.GO_FOR_RAMP
+                    
+            case TaskStep.GO_FOR_RAMP:
+                self.logger.info("Climbing the ramp ...")
+                self.control.set_vel_w(0.1, 0)
 
-            case TaskStep.BOARD_FORWARD:
-                self.logger.info("Climbing ...")
-                self.control.follow_line(True, 0.03, 0.2)
-
-                if self.data.distance >= 2.7:
+                if self.data.distance >= 3.045:
+                    self.data.reset_distance()
                     self.state = TaskStep.TURN_TO_STAIRS
 
             case TaskStep.TURN_TO_STAIRS:
-                self.logger.info("Going through the stairs ...")
-                self.control.set_vel_h(0, np.pi / 2)
+                self.logger.info("Turn to the stairs...")
+                self.control.set_vel_h(0, -np.pi / 2)
 
-                if close_to(self.data.odometry.heading, np.pi / 2):
+                if close_to(self.data.odometry.heading, -np.pi / 2):
+                    self.data.reset_time()
+                    self.state = TaskStep.GO_TO_STAIRS
+                    
+            case TaskStep.GO_TO_STAIRS:
+                self.logger.info("Going to the stairs...")
+                self.control.set_vel_w(0.1, 0)
+
+                if self.data.distance >= 0.6:
+                    self.data.reset_distance()
+                    self.state = TaskStep.TURN_AGAIN
+                    
+            case TaskStep.TURN_AGAIN:
+                self.logger.info("Turn again for stairs...")
+                self.control.set_vel_h(0, -np.pi / 2)
+
+                if close_to(self.data.odometry.heading, -np.pi / 2):
                     self.data.reset_time()
                     self.state = TaskStep.GO_THROUGH_STAIRS
-
+                    
             case TaskStep.GO_THROUGH_STAIRS:
-                self.control.set_vel_w(0.5, 0)
+                self.logger.info("Going through the stairs ...")
+                self.control.set_vel_w(0.1, 0)
 
-                if self.data.time_elapsed >= 2:
+                if self.data.distance >= 2.965:
+                    self.data.reset_distance()
                     self.state = TaskStep.DONE
 
             case TaskStep.DONE:
