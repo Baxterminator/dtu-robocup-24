@@ -42,19 +42,17 @@ class SeeSawTask(BaseTask):
     def loop(self) -> None:
 
         match self.state:
-            case TaskStep.SEESAW_TURN_LEFT
+            case TaskStep.SEESAW_TURN_LEFT:
                 self.logger.info("Turn left 90 degree...")
                 # adjust pose
-                self.data.reset_time()
-                self.control.set_vel_h(0.0,0.1)
-                if self.data.time_elapsed >= (math.pi/0.2):
-                    self.control.set_vel_h(0,0)
-                    self.data.reset_time()
+                self.control.set_vel_h(0, np.pi / 2)
+
+                if close_to(self.data.odometry.heading, np.pi / 2):
+                    self.data.reset_distance()
                     self.state = TaskStep.SEESAW_BEFORE_RAMP
                     
             case TaskStep.SEESAW_BEFORE_RAMP:
                 self.logger.info("Move forward 87cm...")
-                self.data.reset_distance()
                 self.control.set_vel_h(0.1,0.0)
 
                 if self.data.distance > 0.87
@@ -63,7 +61,6 @@ class SeeSawTask(BaseTask):
         
             case TaskStep.SEESAW_RAMP:
                 self.logger.info("Climbing ramp 310cm...")
-                self.data.reset_distance()
                 self.control.set_vel_h(0.1,0.0)
 
                 if self.data.distance > 3.1
@@ -87,12 +84,10 @@ class SeeSawTask(BaseTask):
         
             case TaskStep.SEESAW_TURN_RIGHT:
                 self.logger.info("Turn right 90 degree...")
-                # adjust pose
-                self.data.reset_time()
-                self.control.set_vel_h(0.0,-0.1)
-                if self.data.time_elapsed >= (math.pi/0.2):
-                    self.control.set_vel_h(0,0)
-                    self.data.reset_time()
+                self.control.set_vel_h(0, -np.pi / 2)
+
+                if close_to(self.data.odometry.heading, -np.pi / 2):
+                    self.data.reset_distance()
                     self.state = TaskStep.SEESAW_TO_RAMP
         
             case TaskStep.SEESAW_TO_RAMP:
